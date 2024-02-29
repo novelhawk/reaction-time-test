@@ -1,0 +1,74 @@
+:root {
+  --bg-base: rgb(43, 135, 209);
+  --bg-active: rgb(206, 38, 54);
+  --bg-ready: rgb(75, 219, 106);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  user-select: none;
+  color: white;
+}
+
+body {
+  margin: 0;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+#box {
+  background-color: var(--box-bg, var(--bg-base));
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#box .icon {
+  display: none;
+  color: white;
+  overflow: hidden;
+  align-self: flex-end;
+}
+
+#box[data-status="active"] {
+  --box-bg: var(--bg-active);
+}
+
+#box[data-status="ready"] {
+  --box-bg: var(--bg-ready);
+}
+
+#box[data-status="start"] .icon-start {
+  display: block;
+}
+
+#box[data-status="active"] .icon-active {
+  display: block;
+}
+
+#box[data-status="ready"] .icon-active {
+  display: block;
+}
+
+#box[data-status="done"] .icon-done {
+  display: block;
+}
+
+#box[data-status="error"] .icon-error {
+  display: block;
+}
+
+.description {
+  font-size: 5rem;
+}
+
+.content {
+  display: grid;
+  width: fit-content;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  justify-items: center;
+  gap: 1rem;
+}
