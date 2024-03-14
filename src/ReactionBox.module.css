@@ -1,0 +1,40 @@
+:root {
+  --bg-base: rgb(43, 135, 209);
+  --bg-active: rgb(206, 38, 54);
+  --bg-ready: rgb(75, 219, 106);
+}
+
+.box {
+  background-color: var(--box-bg, var(--bg-base));
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.status-active {
+  --box-bg: var(--bg-active);
+}
+
+.status-ready {
+  --box-bg: var(--bg-ready);
+}
+
+.icon {
+  color: white;
+  overflow: hidden;
+  align-self: flex-end;
+}
+
+.description {
+  font-size: 5rem;
+}
+
+.content {
+  display: grid;
+  width: fit-content;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  justify-items: center;
+  gap: 1rem;
+}

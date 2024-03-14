@@ -6,6 +6,7 @@
 			"indentStyle": "space",
 			"quoteStyle": "single",
 			"semicolons": "always",
+			"jsxQuoteStyle": "single",
 			"lineWidth": 80,
 			"lineEnding": "lf"
 		}
