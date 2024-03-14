@@ -1,7 +1,3 @@
-import { Chart } from 'chart.js';
-
-new Chart('');
-
 const box = document.getElementById('box');
 const description = document.querySelector('span.description');
 const history = document.getElementById('history');
