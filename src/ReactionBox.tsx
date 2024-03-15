@@ -46,7 +46,7 @@ export const ReactionBox: Component = () => {
   const timeRenderer = Intl.NumberFormat(undefined, {
     style: "unit",
     unit: "millisecond",
-    maximumFractionDigits: 2,
+    maximumFractionDigits: 0,
   });
 
   const desc = () =>
