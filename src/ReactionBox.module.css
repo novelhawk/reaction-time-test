@@ -1,7 +1,7 @@
 :root {
-  --bg-base: rgb(43, 135, 209);
-  --bg-active: rgb(206, 38, 54);
-  --bg-ready: rgb(75, 219, 106);
+  --bg-base: rgb(13, 74, 125);
+  --bg-active: rgb(99, 8, 18);
+  --bg-ready: rgb(76, 177, 98);
 }
 
 .box {
