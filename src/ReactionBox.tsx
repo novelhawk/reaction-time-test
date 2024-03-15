@@ -40,6 +40,19 @@ export const ReactionBox: Component = () => {
     e.preventDefault();
     setStatus((prev) => nextStatus[prev]);
   };
+  const keyboardAdvance = (e: KeyboardEvent) => {
+    const k = e.key;
+    if (k.length === 1) {
+      const c = k.charCodeAt(0) & ~0x20;
+      if (c >= 65 && c <= 90) {
+        e.preventDefault();
+        setStatus((prev) => nextStatus[prev]);
+      }
+    } else if (k === "Enter" || k === "Space") {
+      e.preventDefault();
+      setStatus((prev) => nextStatus[prev]);
+    }
+  };
   const statusClass = () => styles[`status-${status()}`];
   const disable = (e: Event) => e.preventDefault();
 
@@ -91,19 +104,20 @@ export const ReactionBox: Component = () => {
   });
 
   return (
-    <div
+    <button
+      type="button"
       class={`${styles.box} ${statusClass()}`}
       onMouseDown={advanceStatus}
-      onKeyDown={advanceStatus}
+      onKeyDown={keyboardAdvance}
       onContextMenu={disable}
-      role="button"
       tabIndex={0}
+      autofocus={true}
     >
       <div class={styles.content}>
         <StateIcon class={styles.icon} status={status} />
         <span class={styles.description}>{desc()}</span>
       </div>
-    </div>
+    </button>
   );
 };
 
