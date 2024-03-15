@@ -36,8 +36,12 @@ export const ReactionBox: Component = () => {
   const [measurements, setMeasurements] = createSignal<Measurement[]>(
     loadMeasurements()
   );
-  const advanceStatus = () => setStatus((prev) => nextStatus[prev]);
+  const advanceStatus = (e: Event) => {
+    e.preventDefault();
+    setStatus((prev) => nextStatus[prev]);
+  };
   const statusClass = () => styles[`status-${status()}`];
+  const disable = (e: Event) => e.preventDefault();
 
   const timeRenderer = Intl.NumberFormat(undefined, {
     style: "unit",
@@ -91,6 +95,9 @@ export const ReactionBox: Component = () => {
       class={`${styles.box} ${statusClass()}`}
       onMouseDown={advanceStatus}
       onKeyDown={advanceStatus}
+      onContextMenu={disable}
+      role="button"
+      tabIndex={0}
     >
       <div class={styles.content}>
         <StateIcon class={styles.icon} status={status} />
