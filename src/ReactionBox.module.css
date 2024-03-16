@@ -27,12 +27,6 @@ button {
   --box-bg: var(--bg-ready);
 }
 
-.icon {
-  color: white;
-  overflow: hidden;
-  align-self: flex-end;
-}
-
 .description {
   font-size: 5rem;
 }
