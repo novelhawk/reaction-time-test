@@ -114,7 +114,7 @@ export const ReactionBox: Component = () => {
       autofocus={true}
     >
       <div class={styles.content}>
-        <StateIcon class={styles.icon} status={status} />
+        <StateIcon class="self-end text-white" status={status} />
         <span class={styles.description}>{desc()}</span>
       </div>
     </button>
