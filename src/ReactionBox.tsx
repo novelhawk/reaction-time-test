@@ -1,17 +1,20 @@
-import { type Component, createSignal, createEffect, on } from "solid-js";
+import {
+  type Component,
+  createSignal,
+  createEffect,
+  on,
+  type Setter,
+} from "solid-js";
 import StateIcon from "./StateIcon";
 
 import styles from "./ReactionBox.module.css";
+import type { InputMethod, Measurement } from "./Measurement.model";
 
 export const statues = ["start", "active", "ready", "done", "error"] as const;
 export type Status = (typeof statues)[number];
 
-type Measurement = {
-  type: "mousedown" | "keydown";
-  which: "left";
-  wait: number;
-  delay: number;
-  timestamp: number;
+type Props = {
+  setMeasurements: Setter<Measurement[]>;
 };
 
 const nextStatus: Record<Status, Status> = {
@@ -29,27 +32,30 @@ const descriptions: Partial<Record<Status, string>> = {
   error: "You clicked too early!",
 };
 
-export const ReactionBox: Component = () => {
+export const ReactionBox: Component<Props> = (props: Props) => {
   const [status, setStatus] = createSignal<Status>("start");
+  const [method, setMethod] = createSignal<InputMethod>("mousedown");
   const [score, setScore] = createSignal<number>(0);
   const [timer, setTimer] = createSignal<number>(-1);
-  const [measurements, setMeasurements] = createSignal<Measurement[]>(
-    loadMeasurements()
-  );
   const advanceStatus = (e: Event) => {
     e.preventDefault();
+    setMethod("mousedown");
     setStatus((prev) => nextStatus[prev]);
   };
   const keyboardAdvance = (e: KeyboardEvent) => {
+    if (e.ctrlKey || e.altKey || e.metaKey) return;
+
     const k = e.key;
     if (k.length === 1) {
       const c = k.charCodeAt(0) & ~0x20;
       if (c >= 65 && c <= 90) {
         e.preventDefault();
+        setMethod("keydown");
         setStatus((prev) => nextStatus[prev]);
       }
     } else if (k === "Enter" || k === "Space") {
       e.preventDefault();
+      setMethod("keydown");
       setStatus((prev) => nextStatus[prev]);
     }
   };
@@ -79,10 +85,10 @@ export const ReactionBox: Component = () => {
       const wait = performance.measure("wait", "initial", "ready");
       const measure = performance.measure("delay", "ready", "done");
       setScore(measure.duration);
-      setMeasurements((prev) => [
+      props.setMeasurements((prev) => [
         ...prev,
         {
-          type: "mousedown",
+          type: method(),
           which: "left",
           wait: wait.duration,
           delay: measure.duration,
@@ -98,10 +104,6 @@ export const ReactionBox: Component = () => {
       callbacks[status()]?.();
     })
   );
-
-  createEffect(() => {
-    saveMeasurements(measurements());
-  });
 
   return (
     <button
@@ -120,21 +122,3 @@ export const ReactionBox: Component = () => {
     </button>
   );
 };
-
-function loadMeasurements(): Measurement[] {
-  const data = window.localStorage.getItem("measurements");
-  if (data == null) {
-    return [];
-  }
-
-  const items: unknown = JSON.parse(data);
-  if (!Array.isArray(items)) {
-    return [];
-  }
-
-  return items;
-}
-
-function saveMeasurements(measurements: Measurement[]): void {
-  window.localStorage.setItem("measurements", JSON.stringify(measurements));
-}
