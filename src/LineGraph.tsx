@@ -21,7 +21,10 @@ function createGraph(canvas: HTMLCanvasElement, props: Props) {
       },
       scales: {
         x: {
-          type: "time",
+          type: "timeseries",
+          time: {
+            unit: "minute",
+          },
         },
       },
       maintainAspectRatio: false,
