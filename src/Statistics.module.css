@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+}
+
+.title {
+  text-align: center;
+  font-size: 2rem;
+  color: #ccc;
+}
+
+.graph {
+  width: 1000px;
+  height: 400px;
+}
