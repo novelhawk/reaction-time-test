@@ -1,6 +1,5 @@
 import { createEffect, type Component, createSignal } from "solid-js";
 
-import styles from "./App.module.css";
 import { ReactionBox } from "./ReactionBox";
 import Statistics from "./Statistics";
 import type { Measurement } from "./Measurement.model";
@@ -15,7 +14,7 @@ const App: Component = () => {
   });
 
   return (
-    <div class="noscroll">
+    <div class="h-screen hidescroll overflow-y-auto">
       <ReactionBox setMeasurements={setMeasurements} />
       <Statistics measurements={measurements} />
     </div>

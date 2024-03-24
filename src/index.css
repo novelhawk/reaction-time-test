@@ -24,14 +24,19 @@ code {
   color: white;
 }
 
-.h100 {
-  height: 100vh;
+button {
+  all: unset;
 }
 
-.noscroll {
+body {
+  background-color: #353535;
+}
+
+.hidescroll {
   -ms-overflow-style: none; /* Internet Explorer 10+ */
   scrollbar-width: none; /* Firefox */
 }
-.noscroll::-webkit-scrollbar {
+
+.hidescroll::-webkit-scrollbar {
   display: none; /* Safari and Chrome */
 }
