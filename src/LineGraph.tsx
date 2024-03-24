@@ -19,11 +19,32 @@ function createGraph(canvas: HTMLCanvasElement, props: Props) {
           display: false,
         },
       },
+      elements: {
+        line: {
+          borderColor: "rgb(75, 192, 192)",
+          tension: 0.2,
+        },
+        point: {
+          radius: 4,
+          backgroundColor: "rgb(75, 192, 192)",
+        },
+      },
       scales: {
         x: {
           type: "timeseries",
           time: {
             unit: "minute",
+          },
+          grid: {
+            display: false,
+          },
+        },
+        y: {
+          border: {
+            display: false,
+          },
+          grid: {
+            color: "#888",
           },
         },
       },

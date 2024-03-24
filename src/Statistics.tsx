@@ -21,10 +21,13 @@ export default function Statistics(props: Props): JSX.Element {
   const data = () => today().map((m) => m.delay);
 
   return (
-    <div class={styles.container}>
-      <div class={styles.graph}>
-        <LineGraph data={data()} timestamps={timestamps()} />
+    <>
+      <h1 class={styles.title}>Statistics</h1>
+      <div class={styles.container}>
+        <div class={styles.graph}>
+          <LineGraph data={data()} timestamps={timestamps()} />
+        </div>
       </div>
-    </div>
+    </>
   );
 }
