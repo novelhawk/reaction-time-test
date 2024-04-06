@@ -12,19 +12,15 @@ type Props = {
 };
 
 export default function Statistics(props: Props): JSX.Element {
-  const normalized = () => props.measurements();
-  const today = () =>
-    normalized().filter(
-      (m) => DateTime.now().startOf("day").toJSDate() < new Date(m.timestamp)
-    );
+  const last20 = () => props.measurements().slice(-20);
 
   return (
     <>
-      <h1 class={styles.title}>Statistics</h1>
+      <h1 class={styles.title}>Last 20 scores</h1>
       <div class={styles.container}>
         <div class={styles.graph}>
           <LineGraph
-            measurements={today}
+            measurements={last20}
             setMeasurements={props.setMeasurements}
           />
         </div>
