@@ -6,16 +6,17 @@ import { type Accessor, onMount, createEffect, type Setter } from "solid-js";
 import type { JSX } from "solid-js/jsx-runtime";
 import type { Measurement } from "./Measurement.model";
 
+type MeasurementChart = Chart<keyof ChartTypeRegistry, Measurement[], number>;
+
 type Props = {
-  timestamps: Accessor<number[]>;
-  data: Accessor<number[]>;
+  measurements: Accessor<Measurement[]>;
   setMeasurements: Setter<Measurement[]>;
 };
 
 function createGraph(
   canvas: HTMLCanvasElement,
   props: Props
-): Chart<keyof ChartTypeRegistry, number[], number> {
+): MeasurementChart {
   return new Chart(canvas, {
     type: "line",
     plugins: [
@@ -39,15 +40,15 @@ function createGraph(
             return;
           }
 
-          const timestamp = chart.data.labels?.[element.index];
-          if (timestamp == null) {
+          const measurement = chart.data.datasets[element.datasetIndex].data[
+            element.index
+          ] as unknown as Measurement;
+          if (measurement == null) {
             return;
           }
 
           props.setMeasurements((measurements) => {
-            const index = measurements.findIndex(
-              (it) => it.timestamp === timestamp
-            );
+            const index = measurements.indexOf(measurement);
             if (index === -1) {
               return measurements;
             }
@@ -68,6 +69,10 @@ function createGraph(
         "touchmove",
         "dblclick",
       ],
+      parsing: {
+        xAxisKey: "timestamp",
+        yAxisKey: "delay",
+      },
       plugins: {
         legend: {
           display: false,
@@ -77,7 +82,12 @@ function createGraph(
           color: "rgb(75, 192, 192)",
           anchor: "start",
           align: "top",
-          formatter: (value: number) => Math.floor(value),
+          formatter: (_value: number, { dataset, dataIndex }) => {
+            const measurement = dataset.data[
+              dataIndex
+            ] as unknown as Measurement;
+            return Math.floor(measurement.delay);
+          },
           offset: 6,
         },
       },
@@ -102,6 +112,7 @@ function createGraph(
           },
         },
         y: {
+          grace: 1,
           border: {
             display: false,
           },
@@ -113,11 +124,10 @@ function createGraph(
       maintainAspectRatio: false,
     },
     data: {
-      labels: props.timestamps(),
       datasets: [
         {
           label: "Test",
-          data: props.data(),
+          data: props.measurements(),
         },
       ],
     },
@@ -126,7 +136,7 @@ function createGraph(
 
 export default function LineGraph(props: Props): JSX.Element {
   let canvas: HTMLCanvasElement | undefined;
-  let graph: Chart<keyof ChartTypeRegistry, number[], number>;
+  let graph: MeasurementChart;
 
   onMount(() => {
     if (canvas) {
@@ -135,10 +145,7 @@ export default function LineGraph(props: Props): JSX.Element {
   });
 
   createEffect(() => {
-    console.log(props.data());
-    console.log(props.timestamps());
-    graph.config.data.labels = props.timestamps();
-    graph.config.data.datasets[0].data = props.data();
+    graph.config.data.datasets[0].data = props.measurements();
     graph.update();
   });
 

@@ -17,8 +17,6 @@ export default function Statistics(props: Props): JSX.Element {
     normalized().filter(
       (m) => DateTime.now().startOf("day").toJSDate() < new Date(m.timestamp)
     );
-  const timestamps = () => today().map((m) => m.timestamp);
-  const data = () => today().map((m) => m.delay);
 
   return (
     <>
@@ -26,8 +24,7 @@ export default function Statistics(props: Props): JSX.Element {
       <div class={styles.container}>
         <div class={styles.graph}>
           <LineGraph
-            data={data}
-            timestamps={timestamps}
+            measurements={today}
             setMeasurements={props.setMeasurements}
           />
         </div>
