@@ -4,10 +4,6 @@
   --bg-ready: rgb(76, 177, 98);
 }
 
-button {
-  all: unset;
-}
-
 .box {
   background-color: var(--box-bg, var(--bg-base));
   height: 100vh;
