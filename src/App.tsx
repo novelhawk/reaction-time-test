@@ -16,7 +16,10 @@ const App: Component = () => {
   return (
     <div class="h-screen hidescroll overflow-y-auto">
       <ReactionBox setMeasurements={setMeasurements} />
-      <Statistics measurements={measurements} />
+      <Statistics
+        measurements={measurements}
+        setMeasurements={setMeasurements}
+      />
     </div>
   );
 };
