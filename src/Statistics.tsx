@@ -1,10 +1,8 @@
-import type { JSX } from "solid-js/jsx-runtime";
-
-import styles from "./Statistics.module.css";
-import LineGraph from "./LineGraph";
-import type { Accessor, Setter } from "solid-js";
-import type { Measurement } from "./Measurement.model";
-import { DateTime } from "luxon";
+import type { Accessor, Setter } from 'solid-js';
+import type { JSX } from 'solid-js/jsx-runtime';
+import LineGraph from './LineGraph';
+import type { Measurement } from './Measurement.model';
+import styles from './Statistics.module.css';
 
 type Props = {
   measurements: Accessor<Measurement[]>;

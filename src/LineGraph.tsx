@@ -1,10 +1,10 @@
-import { Chart, type ChartTypeRegistry } from "chart.js/auto";
-import "luxon";
-import "chartjs-adapter-luxon";
-import ChartDataLabels from "chartjs-plugin-datalabels";
-import { type Accessor, onMount, createEffect, type Setter } from "solid-js";
-import type { JSX } from "solid-js/jsx-runtime";
-import type { Measurement } from "./Measurement.model";
+import { Chart, type ChartTypeRegistry } from 'chart.js/auto';
+import 'chartjs-adapter-luxon';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import 'luxon';
+import { type Accessor, createEffect, onMount, type Setter } from 'solid-js';
+import type { JSX } from 'solid-js/jsx-runtime';
+import type { Measurement } from './Measurement.model';
 
 type MeasurementChart = Chart<keyof ChartTypeRegistry, Measurement[], number>;
 
@@ -15,24 +15,24 @@ type Props = {
 
 function createGraph(
   canvas: HTMLCanvasElement,
-  props: Props
+  props: Props,
 ): MeasurementChart {
   return new Chart(canvas, {
-    type: "line",
+    type: 'line',
     plugins: [
       ChartDataLabels,
       {
-        id: "doubleClickRemove",
+        id: 'doubleClickRemove',
         beforeEvent: (chart, { event, inChartArea }) => {
-          if (event.type !== "dblclick" || !inChartArea || !event?.native) {
+          if (event.type !== 'dblclick' || !inChartArea || !event?.native) {
             return;
           }
 
           const elements = chart.getElementsAtEventForMode(
             event.native,
-            "nearest",
+            'nearest',
             { intersect: true },
-            false
+            false,
           );
 
           const [element] = elements;
@@ -62,16 +62,16 @@ function createGraph(
     ],
     options: {
       events: [
-        "mousemove",
-        "mouseout",
-        "click",
-        "touchstart",
-        "touchmove",
-        "dblclick",
+        'mousemove',
+        'mouseout',
+        'click',
+        'touchstart',
+        'touchmove',
+        'dblclick',
       ],
       parsing: {
-        xAxisKey: "timestamp",
-        yAxisKey: "delay",
+        xAxisKey: 'timestamp',
+        yAxisKey: 'delay',
       },
       plugins: {
         legend: {
@@ -79,9 +79,9 @@ function createGraph(
         },
         datalabels: {
           display: true,
-          color: "rgb(75, 192, 192)",
-          anchor: "start",
-          align: "top",
+          color: 'rgb(75, 192, 192)',
+          anchor: 'start',
+          align: 'top',
           formatter: (_value: number, { dataset, dataIndex }) => {
             const measurement = dataset.data[
               dataIndex
@@ -93,19 +93,19 @@ function createGraph(
       },
       elements: {
         line: {
-          borderColor: "rgb(75, 192, 192)",
+          borderColor: 'rgb(75, 192, 192)',
           tension: 0.2,
         },
         point: {
           radius: 4,
-          backgroundColor: "rgb(75, 192, 192)",
+          backgroundColor: 'rgb(75, 192, 192)',
         },
       },
       scales: {
         x: {
-          type: "timeseries",
+          type: 'timeseries',
           time: {
-            unit: "minute",
+            unit: 'minute',
           },
           grid: {
             display: false,
@@ -117,7 +117,7 @@ function createGraph(
             display: false,
           },
           grid: {
-            color: "#888",
+            color: '#888',
           },
         },
       },
@@ -126,7 +126,7 @@ function createGraph(
     data: {
       datasets: [
         {
-          label: "Test",
+          label: 'Test',
           data: props.measurements(),
         },
       ],
