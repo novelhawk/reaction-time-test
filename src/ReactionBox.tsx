@@ -1,16 +1,16 @@
 import {
   type Component,
-  createSignal,
   createEffect,
+  createSignal,
   on,
   type Setter,
-} from "solid-js";
-import StateIcon from "./StateIcon";
+} from 'solid-js';
+import type { InputMethod, Measurement } from './Measurement.model';
 
-import styles from "./ReactionBox.module.css";
-import type { InputMethod, Measurement } from "./Measurement.model";
+import styles from './ReactionBox.module.css';
+import StateIcon from './StateIcon';
 
-export const statues = ["start", "active", "ready", "done", "error"] as const;
+export const statues = ['start', 'active', 'ready', 'done', 'error'] as const;
 export type Status = (typeof statues)[number];
 
 type Props = {
@@ -18,28 +18,28 @@ type Props = {
 };
 
 const nextStatus: Record<Status, Status> = {
-  start: "active",
-  active: "error",
-  ready: "done",
-  done: "active",
-  error: "active",
+  start: 'active',
+  active: 'error',
+  ready: 'done',
+  done: 'active',
+  error: 'active',
 };
 
 const descriptions: Partial<Record<Status, string>> = {
-  start: "Reaction Time Test",
-  active: "Wait for green",
-  ready: "Click!",
-  error: "You clicked too early!",
+  start: 'Reaction Time Test',
+  active: 'Wait for green',
+  ready: 'Click!',
+  error: 'You clicked too early!',
 };
 
 export const ReactionBox: Component<Props> = (props: Props) => {
-  const [status, setStatus] = createSignal<Status>("start");
-  const [method, setMethod] = createSignal<InputMethod>("mousedown");
+  const [status, setStatus] = createSignal<Status>('start');
+  const [method, setMethod] = createSignal<InputMethod>('mousedown');
   const [score, setScore] = createSignal<number>(0);
   const [timer, setTimer] = createSignal<number>(-1);
   const advanceStatus = (e: Event) => {
     e.preventDefault();
-    setMethod("mousedown");
+    setMethod('mousedown');
     setStatus((prev) => nextStatus[prev]);
   };
   const keyboardAdvance = (e: KeyboardEvent) => {
@@ -50,12 +50,12 @@ export const ReactionBox: Component<Props> = (props: Props) => {
       const c = k.charCodeAt(0) & ~0x20;
       if (c >= 65 && c <= 90) {
         e.preventDefault();
-        setMethod("keydown");
+        setMethod('keydown');
         setStatus((prev) => nextStatus[prev]);
       }
-    } else if (k === "Enter" || k === "Space") {
+    } else if (k === 'Enter' || k === 'Space') {
       e.preventDefault();
-      setMethod("keydown");
+      setMethod('keydown');
       setStatus((prev) => nextStatus[prev]);
     }
   };
@@ -63,33 +63,33 @@ export const ReactionBox: Component<Props> = (props: Props) => {
   const disable = (e: Event) => e.preventDefault();
 
   const timeRenderer = Intl.NumberFormat(undefined, {
-    style: "unit",
-    unit: "millisecond",
+    style: 'unit',
+    unit: 'millisecond',
     maximumFractionDigits: 0,
   });
 
   const desc = () =>
-    status() !== "done" ? descriptions[status()] : timeRenderer.format(score());
+    status() !== 'done' ? descriptions[status()] : timeRenderer.format(score());
 
   const callbacks: Partial<Record<Status, () => void>> = {
     active: () => {
       const wait = Math.random() * 3000 + 1500;
-      const timer = setTimeout(() => setStatus("ready"), wait);
-      performance.mark("initial");
+      const timer = setTimeout(() => setStatus('ready'), wait);
+      performance.mark('initial');
       setTimer(timer);
     },
-    ready: () => performance.mark("ready"),
+    ready: () => performance.mark('ready'),
     done: () => {
-      performance.mark("done");
+      performance.mark('done');
 
-      const wait = performance.measure("wait", "initial", "ready");
-      const measure = performance.measure("delay", "ready", "done");
+      const wait = performance.measure('wait', 'initial', 'ready');
+      const measure = performance.measure('delay', 'ready', 'done');
       setScore(measure.duration);
       props.setMeasurements((prev) => [
         ...prev,
         {
           type: method(),
-          which: "left",
+          which: 'left',
           wait: wait.duration,
           delay: measure.duration,
           timestamp: Date.now(),
@@ -102,12 +102,12 @@ export const ReactionBox: Component<Props> = (props: Props) => {
     on(status, () => {
       clearTimeout(timer());
       callbacks[status()]?.();
-    })
+    }),
   );
 
   return (
     <button
-      type="button"
+      type='button'
       class={`${styles.box} ${statusClass()}`}
       onMouseDown={advanceStatus}
       onKeyDown={keyboardAdvance}
@@ -116,7 +116,7 @@ export const ReactionBox: Component<Props> = (props: Props) => {
       autofocus={true}
     >
       <div class={styles.content}>
-        <StateIcon class="self-end text-white" status={status} />
+        <StateIcon class='self-end text-white' status={status} />
         <span class={styles.description}>{desc()}</span>
       </div>
     </button>

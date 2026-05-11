@@ -1,12 +1,11 @@
-import { createEffect, type Component, createSignal } from "solid-js";
-
-import { ReactionBox } from "./ReactionBox";
-import Statistics from "./Statistics";
-import type { Measurement } from "./Measurement.model";
+import { type Component, createEffect, createSignal } from 'solid-js';
+import type { Measurement } from './Measurement.model';
+import { ReactionBox } from './ReactionBox';
+import Statistics from './Statistics';
 
 const App: Component = () => {
   const [measurements, setMeasurements] = createSignal<Measurement[]>(
-    loadMeasurements()
+    loadMeasurements(),
   );
 
   createEffect(() => {
@@ -14,7 +13,7 @@ const App: Component = () => {
   });
 
   return (
-    <div class="h-screen hidescroll overflow-y-auto">
+    <div class='h-screen hidescroll overflow-y-auto'>
       <ReactionBox setMeasurements={setMeasurements} />
       <Statistics
         measurements={measurements}
@@ -25,7 +24,7 @@ const App: Component = () => {
 };
 
 function loadMeasurements(): Measurement[] {
-  const data = window.localStorage.getItem("measurements");
+  const data = window.localStorage.getItem('measurements');
   if (data == null) {
     return [];
   }
@@ -39,7 +38,7 @@ function loadMeasurements(): Measurement[] {
 }
 
 function saveMeasurements(measurements: Measurement[]): void {
-  window.localStorage.setItem("measurements", JSON.stringify(measurements));
+  window.localStorage.setItem('measurements', JSON.stringify(measurements));
 }
 
 export default App;
